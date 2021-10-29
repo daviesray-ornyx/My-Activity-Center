@@ -1,0 +1,53 @@
+﻿<Window x:Class="MyActivityCenter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyActivityCenter"
+        mc:Ignorable="d"
+        Title="My Activity Center" Height="931" Width="1863" WindowState="Maximized" WindowStyle="None" Icon="images/home-icon.png" >
+    <Window.Background>
+        <ImageBrush>
+            <ImageBrush.ImageSource>
+                <ImageSource>images/bg-mainscreen.jpg</ImageSource>
+            </ImageBrush.ImageSource>
+        </ImageBrush>
+    </Window.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" FlowDirection="RightToLeft" Background="Transparent" Height="120" VerticalAlignment="Center" >
+            <Image Name="imgClose" Stretch="Fill" Cursor="Hand" Width="76" Height="76" Source="/images/close-icon.png" ToolTip="Close" MouseEnter="ImgClose_MouseEnter" MouseLeave="ImgClose_MouseLeave" MouseLeftButtonUp="ImgClose_MouseLeftButtonUp"/>
+            <Image Name="imgMinimize"  Stretch="Fill" Cursor="Hand" Width="76" Height="76" Source="images/minimize-icon.png" ToolTip="Minimize" MouseEnter="ImgMinimize_MouseEnter" MouseLeave="ImgMinimize_MouseLeave" MouseLeftButtonUp="ImgMinimize_MouseLeftButtonUp" />
+            <Image Name="imgSettings" Stretch="Fill" Cursor="Hand" Width="76" Height="76" Source="images/settings-icon.png" ToolTip="Settings" MouseEnter="ImgSettings_MouseEnter" MouseLeave="ImgSettings_MouseLeave" MouseLeftButtonUp="ImgSettings_MouseLeftButtonUp" />
+            <Image Name="imgUpdateMyActivities" Stretch="Fill" Cursor="Hand" Width="76" Height="76" Source="images/download-globe.png" ToolTip="Update My Activities" MouseEnter="ImgUpdateMyActivities_MouseEnter" MouseLeave="ImgUpdateMyActivities_MouseLeave" MouseLeftButtonUp="ImgUpdateMyActivities_MouseLeftButtonUp" />
+        </StackPanel>
+        <Canvas Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Canvas Canvas.Right="5" Canvas.Top="400" Width="250" Height="240" >
+                <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/painting2.png" />
+                <Image Name="imgColouring" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_colouring.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick" />
+            </Canvas>
+            <Canvas Canvas.Right="310" Canvas.Top="350" Width="250" Height="240" >
+                <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/puzzle2.png" />
+                <Image Name="imgPuzzles" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_puzzles.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick" />
+            </Canvas>
+            <Canvas Canvas.Left="200" Canvas.Bottom="100" Width="250" Height="240" >
+                <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/craft.png" />
+                <Image Name="imgCrafts" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_crafts.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick"/>
+            </Canvas>
+            <Canvas Canvas.Right="500" Canvas.Bottom="150" Width="250" Height="240" >
+                <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/games.png" />
+                <Image Name="imgGames" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_games.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick"/>
+            </Canvas>
+            <Canvas Canvas.Left="450" Canvas.Bottom="200" Width="250" Height="240" >
+                <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/storytelling.png" />
+                <Image Name="imgStoryTelling" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_storytelling.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick"/>
+            </Canvas>
+        </Canvas>
+    </Grid>
+</Window>
