@@ -1,4 +1,4 @@
-﻿<Window x:Class="MyActivityCenter.ActivitiesListWindow"
+﻿<Window x:Name="window" x:Class="MyActivityCenter.ActivitiesListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -25,31 +25,49 @@
             </StackPanel.Background>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Cursor="Hand" Height="120"
                     PreviewMouseLeftButtonUp="Action_BackHome">
-                
+
                 <Image Name="ImgBack" Width="76" Height="76" Source="images/back.png" 
                    ToolTip="Back" MouseEnter="ImgBack_MouseEnter" MouseLeave="ImgBack_MouseLeave"/>
                 <Label Content="Back" VerticalAlignment="Center" FontFamily="Berlin Sans FB Demi" Foreground="White" FontSize="42" />
             </StackPanel>
             <Label Height="80" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Berlin Sans FB Demi" Foreground="White" FontSize="56" Content="{Binding Category}"/>
         </StackPanel>
-        
-        
 
-        <ListView Name="lvActivities" Grid.Row="2" Grid.Column="0" Background="Transparent" Padding="92, 8,32, 32" BorderThickness="0" FontSize="32" ItemsSource="{Binding FilesInCategory, Mode=TwoWay}" >
-            <ListView.View>
-                <GridView ColumnHeaderContainerStyle="{StaticResource hiddenHeaderStyle}">
-                    
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}"/>
-                </GridView>
-            </ListView.View>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <EventSetter Event="PreviewMouseLeftButtonUp" Handler="ListViewItem_PreviewMouseLeftButtonUp" />
-                    <EventSetter Event="MouseLeave" Handler="ListViewItem_MouseLeave"/>
-                    <Setter Property="Cursor" Value="Hand"/>
-                    <Setter Property="Height" Value="80"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView> 
+        <Grid Grid.Row="2" Grid.Column="0" Background="Transparent" >
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <ListView Name="lvActivities" Grid.Row="0" Grid.Column="0" Padding="92, 8,32, 32" BorderThickness="0" FontSize="32" ItemsSource="{Binding FilesInCategory, Mode=TwoWay}" SelectionChanged="LvActivities_SelectionChanged" >
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource hiddenHeaderStyle}">
+
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}"/>
+                    </GridView>
+                </ListView.View>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <!--<EventSetter Event="MouseLeave" Handler="ListViewItem_MouseLeave"/>-->
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Height" Value="80"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+            <Grid Name="gridPreview" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="150"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Name="imgPreview" Grid.Row="0" Grid.Column="0"  Source="{Binding PreviewPath, Mode=TwoWay}" VerticalAlignment="Top"/>
+                <Button Grid.Row="1" Grid.Column="0" Width="100" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Open" Margin="24" Cursor="Hand" Click="Action_OpenResource"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -68,11 +69,40 @@ namespace MyActivityCenter
 
         }
 
+        private LocalFile _selectedFile;
+        public LocalFile SelectedFile
+        {
+            get
+            {
+                if (_selectedFile == null)
+                {
+                    // create a default selected file
+                    _selectedFile = new LocalFile()
+                    {
+                        NameWithExtension = "doc-paceholder.png",
+                        Name = "Placeholder",
+                        FullPath = "images/doc-placeholder.png",
+                        DirectoryPath = "images",
+                        PreviewPath = "/MyActivityCenter;component/images/doc-placeholder.png"
+
+                    };
+                };
+                return _selectedFile;
+            }
+            set
+            {
+                if (_selectedFile == value)
+                    return;
+                _selectedFile = value;
+                OnPropertyChanged("SelectedFile");
+            }
+        }
+
         public ActivitiesListWindow()
         {
             InitializeComponent();
             DataContext = this;
-
+            gridPreview.DataContext = SelectedFile;
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -89,22 +119,31 @@ namespace MyActivityCenter
                 currentCategoryPath = System.IO.Path.Combine(baseDirectory, Category);
             }
 
+
             // We've got the full path. Next get all files in the directory
-            var filePaths = Directory.GetFiles(currentCategoryPath, "*", SearchOption.AllDirectories);
             var LocalFiles = new List<LocalFile>();
 
+            if (!Directory.Exists(currentCategoryPath))
+            {
+                Directory.CreateDirectory(currentCategoryPath);
+                return LocalFiles;
+            }
+
+            var filePaths = Directory.GetFiles(currentCategoryPath, "*", SearchOption.AllDirectories).Where(item => !item.Contains("preview-cache")); //Exclude cache folders
+            
             foreach (var filePath in filePaths)
             {
                 var fileInfo = new FileInfo(filePath);
-                LocalFiles.Add(
-                    new LocalFile()
-                    {
-                        NameWithExtension = fileInfo.Name,
-                        Name = System.IO.Path.GetFileNameWithoutExtension(filePath),
-                        FullPath = filePath,
-                        DirectoryPath = fileInfo.DirectoryName
-                    }
-                );
+                var file = new LocalFile()
+                {
+                    NameWithExtension = fileInfo.Name,
+                    Name = System.IO.Path.GetFileNameWithoutExtension(filePath),
+                    FullPath = filePath,
+                    DirectoryPath = fileInfo.DirectoryName
+                };
+
+                file.CreatePreviewFile(); // Create preview file on creation
+                LocalFiles.Add(file);
             }
             return LocalFiles;
         }
@@ -135,18 +174,23 @@ namespace MyActivityCenter
             ImgBack.BeginAnimation(Image.WidthProperty, db);
             ImgBack.BeginAnimation(Image.HeightProperty, db);
         }
-
-        private void ListViewItem_PreviewMouseLeftButtonUp(object sender, MouseEventArgs e)
+        
+        private void LvActivities_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var localFile = (LocalFile)((ListBoxItem)sender).DataContext;
-            System.Diagnostics.Process.Start(localFile.FullPath);
+            if (lvActivities.SelectedItem == null)
+                return;
+            SelectedFile = (LocalFile)lvActivities.SelectedItem;
+
+            //TODO: Ensure the right type's are always there
+            // 
+            imgPreview.Source = new BitmapImage(new Uri(SelectedFile.PreviewPath)); ;
         }
 
-        private void ListViewItem_MouseLeave(object sender, MouseEventArgs e)
+        private void Action_OpenResource(object sender, RoutedEventArgs e)
         {
-            // lvActivities.SelectedItem
-            // Leaving selected item            
+            if (SelectedFile.Name == "Placeholder")
+                return;
+            Process.Start(SelectedFile.FullPath);
         }
-
     }
 }
