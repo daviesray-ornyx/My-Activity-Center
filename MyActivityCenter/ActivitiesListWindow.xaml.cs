@@ -183,7 +183,7 @@ namespace MyActivityCenter
 
             //TODO: Ensure the right type's are always there
             // 
-            imgPreview.Source = new BitmapImage(new Uri(SelectedFile.PreviewPath)); ;
+            imgPreview.Source = new BitmapImage(new Uri(SelectedFile.PreviewPath)); ; //TODO: Use a try and replace with doc-placeholder if non existent
         }
 
         private void Action_OpenResource(object sender, RoutedEventArgs e)

@@ -48,6 +48,10 @@
                 <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/storytelling.png" />
                 <Image Name="imgStoryTelling" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_storytelling.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick"/>
             </Canvas>
+            <Canvas Canvas.Left="650" Canvas.Bottom="200" Width="250" Height="240" >
+                <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/worksheets.png" />
+                <Image Name="imgWorkSheets" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_worksheets.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick"/>
+            </Canvas>
         </Canvas>
     </Grid>
 </Window>
