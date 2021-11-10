@@ -15,8 +15,6 @@ using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 
-using Spire.Xls;
-
 using MyActivityCenter.Properties;
 
 namespace MyActivityCenter.lib

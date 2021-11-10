@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:busyIndicatorEasy="clr-namespace:Wpf.BusyIndicatorEasy;assembly=Wpf.BusyIndicatorEasy"
         xmlns:local="clr-namespace:MyActivityCenter"
         mc:Ignorable="d"
-        Title="My Activity Center" Height="931" Width="1863" WindowState="Maximized" WindowStyle="None" Icon="images/home-icon.png" >
+        Title="My Activity Center" Height="931" Width="1863" WindowState="Maximized" WindowStyle="None" Icon="images/home-icon.png" KeyboardNavigation.TabNavigation="Cycle" KeyboardNavigation.ControlTabNavigation="Cycle" >
     <Window.Background>
         <ImageBrush>
             <ImageBrush.ImageSource>
@@ -36,9 +37,9 @@
                 <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/puzzle2.png" />
                 <Image Name="imgPuzzles" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_puzzles.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick" />
             </Canvas>
-            <Canvas Canvas.Left="200" Canvas.Bottom="100" Width="250" Height="240" >
+            <Canvas Canvas.Left="200" Canvas.Bottom="100" Width="250" Height="240" GotFocus="ImgAnimate_GotFocus" KeyboardNavigation.IsTabStop="True" KeyboardNavigation.TabIndex="1" >
                 <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/craft.png" />
-                <Image Name="imgCrafts" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_crafts.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick"/>
+                <Image Name="imgCrafts" Width="250" Height="100" Canvas.Bottom="0" Canvas.Left="0" Source="images/lbl_crafts.png" Cursor="Hand" PreviewMouseLeftButtonUp="Action_CategoryClick" />
             </Canvas>
             <Canvas Canvas.Right="500" Canvas.Bottom="150" Width="250" Height="240" >
                 <Image Width="250" Height="180" Canvas.Top="0" Canvas.Left="0" Source="/MyActivityCenter;component/images/games.png" />

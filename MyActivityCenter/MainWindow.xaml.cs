@@ -112,11 +112,12 @@ namespace MyActivityCenter
 
         private void Action_CategoryClick(object sender, MouseButtonEventArgs e)
         {
+
             var activitiesListWindow = new ActivitiesListWindow(); // You can add an indicator for the list to be shown
             switch (((Image)sender).Name)
-            {                 
-                case "imgPuzzles":                   
-                    activitiesListWindow.Category = "Puzzles";                    
+            {
+                case "imgPuzzles":
+                    activitiesListWindow.Category = "Puzzles";
                     break;
                 case "imgStoryTelling":
                     activitiesListWindow.Category = "Storytelling";
@@ -137,9 +138,14 @@ namespace MyActivityCenter
                     break;
             }
             activitiesListWindow.Owner = this;
-            activitiesListWindow.GetFilesInCategory();
             activitiesListWindow.Show();
             this.Hide();
+        }
+
+        private void ImgAnimate_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var db = Animate.GetInstance().GetMenuDoubleAnimation(100, 100 * 0.5, 1000, 5);
+            (sender as Canvas).Background = Brushes.Black;
         }
     }
 }

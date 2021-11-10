@@ -25,7 +25,8 @@ namespace MyActivityCenter
     {
         private string baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\My Activity Center";
 
-             
+        private bool listBusyIndicatorOn = false;
+        private bool previewBusyIndicatorOn = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private enum ResourceCategories
@@ -50,13 +51,11 @@ namespace MyActivityCenter
             }
         }
 
-        private List<LocalFile> _filesInCategory;
-        public List<LocalFile> FilesInCategory
+        private List<ResourceFile> _filesInCategory;
+        public List<ResourceFile> FilesInCategory
         {
             get
             {
-                if (_filesInCategory == null)
-                    _filesInCategory = GetFilesInCategory();
                 return _filesInCategory;
             }
             set
@@ -69,22 +68,20 @@ namespace MyActivityCenter
 
         }
 
-        private LocalFile _selectedFile;
-        public LocalFile SelectedFile
+        private ResourceFile _selectedFile;
+        public ResourceFile SelectedFile
         {
             get
             {
                 if (_selectedFile == null)
                 {
                     // create a default selected file
-                    _selectedFile = new LocalFile()
+                    _selectedFile = new ResourceFile()
                     {
                         NameWithExtension = "doc-paceholder.png",
                         Name = "Placeholder",
                         FullPath = "images/doc-placeholder.png",
-                        DirectoryPath = "images",
                         PreviewPath = "/MyActivityCenter;component/images/doc-placeholder.png"
-
                     };
                 };
                 return _selectedFile;
@@ -101,7 +98,7 @@ namespace MyActivityCenter
         public ActivitiesListWindow()
         {
             InitializeComponent();
-            DataContext = this;
+
             gridPreview.DataContext = SelectedFile;
         }
 
@@ -111,7 +108,7 @@ namespace MyActivityCenter
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public List<LocalFile> GetFilesInCategory()
+        private List<ResourceFile> GetFilesInCategory()
         {
             var currentCategoryPath = baseDirectory;
             if (Category != ResourceCategories.All.ToString())
@@ -121,7 +118,7 @@ namespace MyActivityCenter
 
 
             // We've got the full path. Next get all files in the directory
-            var LocalFiles = new List<LocalFile>();
+            var LocalFiles = new List<ResourceFile>();
 
             if (!Directory.Exists(currentCategoryPath))
             {
@@ -129,20 +126,19 @@ namespace MyActivityCenter
                 return LocalFiles;
             }
 
-            var filePaths = Directory.GetFiles(currentCategoryPath, "*", SearchOption.AllDirectories).Where(item => !item.Contains("preview-cache")); //Exclude cache folders
+            var filePaths = Directory.GetFiles(currentCategoryPath, "*", SearchOption.AllDirectories).Where(item => !item.Contains("preview-cache") && !item.Contains("~$")); //Exclude cache folders
             
             foreach (var filePath in filePaths)
             {
                 var fileInfo = new FileInfo(filePath);
-                var file = new LocalFile()
+                var file = new ResourceFile()
                 {
                     NameWithExtension = fileInfo.Name,
                     Name = System.IO.Path.GetFileNameWithoutExtension(filePath),
                     FullPath = filePath,
-                    DirectoryPath = fileInfo.DirectoryName
                 };
 
-                file.CreatePreviewFile(); // Create preview file on creation
+                //file.CreatePreviewFile(); // Preview file only created on demand
                 LocalFiles.Add(file);
             }
             return LocalFiles;
@@ -179,10 +175,8 @@ namespace MyActivityCenter
         {
             if (lvActivities.SelectedItem == null)
                 return;
-            SelectedFile = (LocalFile)lvActivities.SelectedItem;
+            SelectedFile = (ResourceFile)lvActivities.SelectedItem;
 
-            //TODO: Ensure the right type's are always there
-            // 
             imgPreview.Source = new BitmapImage(new Uri(SelectedFile.PreviewPath)); ; //TODO: Use a try and replace with doc-placeholder if non existent
         }
 
@@ -191,6 +185,41 @@ namespace MyActivityCenter
             if (SelectedFile.Name == "Placeholder")
                 return;
             Process.Start(SelectedFile.FullPath);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ToggleListBusyIndicator(true);
+            if (FilesInCategory == null)
+            {
+                // Begin getting them Files
+                FilesInCategory = GetFilesInCategory();
+                lvActivities.ItemsSource = FilesInCategory;
+            }
+
+            // Set selected File
+            lvActivities.SelectedIndex = 0;
+            
+            ToggleListBusyIndicator(false);
+        }
+
+        private void ToggleListBusyIndicator(bool show)
+        {
+            if (show)
+            {
+                listBusyIndicatorOn = true;
+                ListBusyIndicatorRow.Height = new GridLength(100);
+            }
+            else
+            {
+                listBusyIndicatorOn = false;
+                ListBusyIndicatorRow.Height = new GridLength(0);
+            }
+        }
+
+        private void TogglePreviewBusyIndicator()
+        {
+
         }
     }
 }
